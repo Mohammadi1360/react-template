@@ -4,13 +4,11 @@ import { Well } from 'react-bootstrap';
 
 export default class Home extends Component {
 
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
+  // }
 
-    this.yahooWidget = this.yahooWidget.bind(this);
-  }
-
-  yahooWidget() {
+  yahooWidget = () => {
     const query = this.props.weather.query;
     if (query && query.results) {
       let html = query.results.channel.item.description;
@@ -27,7 +25,7 @@ export default class Home extends Component {
     } else {
       return false;
     }
-  }
+  };
 
 
   render() {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import SimpleForm from './SimpleForm';
-import { Header } from 'semantic-ui-react';
-
+import { Well } from 'react-bootstrap';
 
 export default class Home extends Component {
 
@@ -18,13 +17,12 @@ export default class Home extends Component {
       // remove <![CDATA[ and ]]>
       html = html.replace(/(<!\[CDATA\[|]]>)/g, '');
       return (
-        <div>
-          <br/>
-          <Header as='h3' textAlign='center'>
+        <Well bsSize="large">
+          <h3>
             {query.results.channel.description}
-          </Header>
+          </h3>
           <div dangerouslySetInnerHTML={{ __html: html }}></div>
-        </div>
+        </Well>
       );
     } else {
       return false;

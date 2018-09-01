@@ -1,38 +1,33 @@
-import { takeEvery, fork, call, put } from 'redux-saga/effects';
+import {takeEvery, fork, call, put} from 'redux-saga/effects';
 import request from 'superagent';
 
 function getWeather(location) {
+    const url = `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D"${location}")&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`;
 
-  const url = `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D"${location}")&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`;
-
-  console.log('Here 2');
-
-  // call api
-  return request
-    .get(url)
-    .then((data) => {
-      return JSON.parse(data.text);
-    });
+    // call api
+    return request
+        .get(url)
+        .then(data => JSON.parse(data.text)).catch((err) => {
+            console.log(err.message);
+        });
 }
-
 
 // one api call
-function* callGetWeather({ location, resolve, reject }) {
-  const result = yield call(getWeather, location);
-  // console.log('Here 1');
-  // console.log(result);
-  if (result.query.results) {
-    yield put({ type: 'FETCH_WEATHER_DONE', result });
-    yield call(resolve);
-  } else {
-    yield call(reject, { location: 'No Data For That Location' });
-  }
-
+function* callGetWeather({location, resolve, reject}) {
+    const result = yield call(getWeather, location);
+    // console.log('Here 1');
+    // console.log(result);
+    if (result.query.results) {
+        yield put({type: 'FETCH_WEATHER_DONE', result});
+        yield call(resolve);
+    } else {
+        yield call(reject, {location: 'No Data For That Location'});
+    }
 }
 
-//Listening for an action
+// Listening for an action
 function* getWeatherSaga() {
-  yield takeEvery('FETCH_WEATHER', callGetWeather);
+    yield takeEvery('FETCH_WEATHER', callGetWeather);
 }
 
 // // one api call
@@ -48,8 +43,8 @@ function* getWeatherSaga() {
 
 
 export default function* root() {
-  yield [
-    fork(getWeatherSaga),
-    // fork(getTacosSaga),
-  ];
+    yield [
+        fork(getWeatherSaga),
+        // fork(getTacosSaga),
+    ];
 }

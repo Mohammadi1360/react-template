@@ -11,8 +11,12 @@
     "react-scripts": "1.1.4"
   },
   "dependencies": {
+    "moment": "^2.22.1",
+    "moment-jalaali": "^0.7.2",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.3",
+    "react-bootstrap-table-next": "^1.1.4",
+    "react-bootstrap-table2-filter": "^1.0.0",
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
     "react-router": "^3.0.0",
@@ -22,12 +26,10 @@
     "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "superagent": "^3.8.3",
-    "moment": "^2.22.1",
-    "moment-jalaali": "^0.7.2"
+    "superagent": "^3.8.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=3005 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

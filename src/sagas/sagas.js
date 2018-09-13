@@ -30,21 +30,37 @@ function* getWeatherSaga() {
     yield takeEvery('FETCH_WEATHER', callGetWeather);
 }
 
-// // one api call
-// function* callGetTacos(action) {
-//   const result = yield call(something, action.param);
-//   yield put({ type: '', result });
-// }
-//
-// //Listening for an action
-// function* getTacosSaga() {
-//   yield takeEvery('FETCH_TACOS', callGetTacos);
-// }
+function getCustomerList() {
+    const url = `http://localhost:3000/employees`;
+
+    // call api
+    return request
+        .get(url)
+        .then(data => JSON.parse(data.text)).catch((err) => {
+            console.log(err.message);
+        });
+}
+
+// one api call
+function* callGetCustomerList({resolve, reject}) {
+    const result = yield call(getCustomerList);
+    if (result.query.results) {
+        yield put({type: 'FETCH_CUSTOMER_LIST_DONE', result});
+        yield call(resolve);
+    } else {
+        yield call(reject, {location: 'No Data FOUND'});
+    }
+}
+
+//Listening for an action
+function* getCustomerListSaga() {
+    yield takeEvery('FETCH_CUSTOMER_LIST', callGetCustomerList);
+}
 
 
 export default function* root() {
     yield [
         fork(getWeatherSaga),
-        // fork(getTacosSaga),
+        fork(getCustomerListSaga),
     ];
 }
